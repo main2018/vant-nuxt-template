@@ -1,6 +1,6 @@
 # template
 
-> My ace Nuxt.js project with vant
+> My ace Nuxt.js project
 
 ## Build Setup
 
@@ -17,8 +17,6 @@ $ yarn start
 
 # generate static project
 $ yarn run generate
-
-# use pm2 forever node process
-$ yarn run pm2:start
 ```
 
+For detailed explanation on how things work, checkout [Nuxt.js docs](https://nuxtjs.org).

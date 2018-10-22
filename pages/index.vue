@@ -37,9 +37,6 @@
 
 export default {
   name:"home",
-  async mounted(){
-    
-  },
   methods: {
     toActionsheet() {
       this.$store.commit('setUser', '你的名字')

@@ -28,8 +28,24 @@ export const actions = {
   }, {
     req
   }) {
-    if (req.query.token) {
-      commit('setToken', req.query.token)
+    if (req.session.token) {
+      commit('setToken', req.session.token)
     }
+  },
+  getStatic1() {
+    return new Promise(async (resolve) => {
+      const data = await this.$axios.$get(
+        "/smoke-device-mgmt/deviceStatic/static1"
+      );
+      resolve(data);
+    })
+  },
+  getStatic() {
+    return new Promise(async (resolve) => {
+      const data = await this.$axios.$get(
+        "/smoke-device-mgmt/deviceStatic/static"
+      );
+      resolve(data);
+    })
   }
 }

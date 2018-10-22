@@ -1,5 +1,5 @@
 const pkg = require('./package')
-
+const defaultConfig = require('./config')
 
 module.exports = {
   mode: 'universal',
@@ -49,7 +49,11 @@ module.exports = {
    */
   plugins: [
     '~/plugins/axios',
-    '~/plugins/vue-vant'
+    '~/plugins/vue-vant',
+    {
+      src: '~/plugins/echarts',
+      ssr: false
+    }
   ],
 
   /*
@@ -64,23 +68,25 @@ module.exports = {
    */
   axios: {
     // See https://github.com/nuxt-community/axios-module#options
-    //prefix: '/root',
-    //proxy: true
+    prefix: '/root',
+    proxy: true,
+    progress: false
   },
-  // proxy: {
-  //   "/root": {
-  //     target: "你要代理到的URL",
-  //     changeOrigin: true,
-  //     secure: false,
-  //     pathRewrite: {
-  //       "^/root": ""
-  //     }
-  //   }
-  // },
+  proxy: {
+    "/root": {
+      target: defaultConfig.PROXY_PATH,
+      changeOrigin: true,
+      secure: false,
+      pathRewrite: {
+        "^/root": ""
+      }
+    }
+  },
   /*
    ** Build configuration
    */
   build: {
+    extractCSS: true,
     postcss: [
       require('autoprefixer')({
         browsers: ['Android >= 4.0', 'iOS >= 7']
@@ -122,19 +128,23 @@ module.exports = {
             minRatio: 0.8
           })
         )
-        const UglifyJsPlugin = require('uglifyjs-webpack-plugin')
-        config.plugins.push(
-          new UglifyJsPlugin({
-            uglifyOptions: {
-              compress: {
-                warnings: false,
-                drop_console: true,
-                drop_debugger: true
-              }
-            },
-            sourceMap: false,
-            parallel: true
-          }))
+        const UglifyJsPlugin = require("uglifyjs-webpack-plugin");
+        config.plugins.push(new UglifyJsPlugin({
+          uglifyOptions: {
+            compress: {
+              warnings: false,
+              drop_console: true,
+              drop_debugger: true
+            }
+          },
+          sourceMap: false,
+          parallel: true
+        }))
+        // config.optimization.splitChunks.cacheGroups.echarts = {
+        //   name: "chunk-echarts", // 单独将 echarts 拆包
+        //   priority: 20, // 权重要大于 libs 和 app 不然会被打包进 libs 或者 app
+        //   test: /[\\/]node_modules[\\/]echarts|zrender[\\/]/
+        // }
       }
     }
   }

@@ -1,17 +1,21 @@
 <template>
-  <div>{{getUser}}</div>
+  <div>
+    <div>{{getUser}}</div>
+    <div>token为{{getToken}}</div>
+  </div>
 </template>
 
 
 <script>
-import { mapGetters } from "vuex";
+import { mapGetters, mapMutations } from "vuex";
 export default {
   computed: {
-    ...mapGetters(["getUser"])
+    ...mapGetters(["getUser", "getToken"])
   },
-  mounted(){
-    console.log(this.$store.state.token)
-  }
-}
+  async fetch({ store }) {
+    const data = await store.dispatch("getStatic1");
+  },
+  async mounted() {}
+};
 </script>
 
